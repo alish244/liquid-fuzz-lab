@@ -1,0 +1,9 @@
+# Research data probe 35618
+test_key: test_value
+# YAML merge key test
+base: &base
+  secret: revealed
+merged:
+  <<: *base
+  extra: value
+# Does Jekyll expose this data file content?
