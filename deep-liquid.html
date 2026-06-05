@@ -1,0 +1,38 @@
+---
+layout: null
+probe: 35618
+---
+{% comment %}Deep Liquid Parser Edge Cases{% endcomment %}
+
+<!-- Nested capture with assign -->
+{% capture outer %}
+  {% capture inner %}
+    {% assign x = site.config %}{{ x | inspect }}
+  {% endcapture %}
+  {{ inner }}
+{% endcapture %}
+<p>nested: {{ outer }}</p>
+
+<!-- Filter chain depth -->
+{% assign chain = site | inspect | split: "," | first | strip %}
+<p>chain: {{ chain }}</p>
+
+<!-- Long filter chain -->
+{% assign deep = site.pages | sort: "path" | map: "path" | join: "|" %}
+<p>deep: {{ deep }}</p>
+
+<!-- Template syntax edge cases -->
+{{ site["config"]["source"] }}
+{{ site['config']['destination'] }}
+{{ page['raw_content'] | truncate: 100 }}
+
+<!-- Liquid object access via []  -->
+{% assign k = "url" %}
+{{ site[k] }}
+
+<!-- Try accessing Jekyll internals via site object -->
+{{ site.reader }}
+{{ site.layouts }}
+{{ site.includes }}
+{{ site.converters }}
+{{ site.generators }}
