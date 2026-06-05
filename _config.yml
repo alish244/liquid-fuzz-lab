@@ -1,0 +1,27 @@
+
+title: "Liquid Fuzz Lab 35618"
+url: "https://alish244.github.io"
+
+# Test: can we specify include/exclude to expose server paths?
+include:
+  - /etc/passwd
+  - /etc/hostname
+  - _data
+
+# Test: source/destination manipulation
+# source: /
+# destination: /tmp/output
+
+# Test: plugin-like config (post-2022 fields)
+liquid:
+  error_mode: warn
+  strict_variables: false
+  strict_filters: false
+
+# Test: reading env vars via config interpolation
+# github_token: <%= ENV['GITHUB_TOKEN'] %>  # Ruby ERB - blocked in safe mode
+
+# Test: new Jekyll 4.x features
+future: true
+unpublished: true
+show_drafts: true
